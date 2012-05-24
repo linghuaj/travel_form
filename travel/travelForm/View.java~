@@ -1,0 +1,84 @@
+
+/*Class          : View
+  Author         : Linghua Jin
+  Description:
+
+  1. create the window;
+  2. draw all the components;
+  3. needs info. from Model, Controller
+  */
+
+
+package travelForm;
+
+import javax.swing.*;
+import java.awt.GridLayout;
+
+public class View extends JFrame{
+  //declaration in  code to supply the version UID.
+  //else serializable class does not declare a static final serialVersionUID field
+  private static final long serialVersionUID = 1L; 
+
+
+  public View(){
+  }
+  public void addController(Controller c)
+  {controller = c;}
+  
+  public void addModel(Model m)
+  {model = m;}
+  
+//  public void addData(Data d)
+//  {data = d;}
+  
+  public void build(){
+    
+    setSize(400,250);
+    setTitle("Travel Form");
+    
+    // generate 5 panels, each contains on line;
+    JPanel pnl_all = new JPanel(new GridLayout(5,1));
+    JPanel pnl_1=new JPanel();
+    JPanel pnl_2=new JPanel();
+    JPanel pnl_3=new JPanel();
+    JPanel pnl_4=new JPanel();
+    JPanel pnl_5=new JPanel();
+    
+    JTextField txt1=controller.getTextField(15,"from");
+    JTextField txt2=controller.getTextField(15,"to");
+    JComboBox cb10=controller.getComboBox(model.getMonth(),"departMonth");
+    JComboBox cb11=controller.getComboBox(model.getDate(),"departDate");
+    JComboBox cb12=controller.getComboBox(model.getYear(),"departYear");
+    JComboBox cb13=controller.getComboBox(model.getTime(),"departTime");
+    
+    JComboBox cb20=controller.getComboBox(model.getMonth(),"returnMonth");
+    JComboBox cb21=controller.getComboBox(model.getDate(),"returnDate");
+    JComboBox cb22=controller.getComboBox(model.getYear(),"returnYear");
+    JComboBox cb23=controller.getComboBox(model.getTime(),"returnTime");
+    
+    JComboBox cb30=controller.getComboBox(model.getPassenger(),"passenger");
+    
+    //add components to sepearte panels
+    pnl_1.add(controller.getLabel("from:")); pnl_1.add(txt1); 
+    pnl_2.add(controller.getLabel("To:")); pnl_2.add(txt2); 
+    pnl_3.add(controller.getLabel("Departure:")); pnl_3.add(cb10); pnl_3.add(cb11); pnl_3.add(cb12); pnl_3.add(cb13);
+    pnl_4.add(controller.getLabel("Return:")); pnl_4.add(cb20); pnl_4.add(cb21); pnl_4.add(cb22); pnl_4.add(cb23);
+    pnl_5.add(controller.getLabel("Passenger:"));pnl_5.add(cb30);pnl_5.add(controller.getButton("Submit"));
+    
+    // pnl_1.add(cb10);pnl.add(cb12);
+    pnl_all.add(pnl_1);pnl_all.add(pnl_2);pnl_all.add(pnl_3);pnl_all.add(pnl_4);pnl_all.add(pnl_5);
+    add(pnl_all);
+
+    setVisible(true);
+    
+  }
+//  void update(){
+//    repaint();
+//  }
+  
+  // view needs to be manipulated by both model and controller 
+  Controller controller;  
+  Model model; 
+ // Data data;
+  
+}

@@ -1,0 +1,28 @@
+//build and connect components in the travelForm package;
+
+import travelForm.*;
+
+public class Application
+{
+ public static void main(String[] args)
+ {
+
+   Model      model      = new Model();
+   Data       data       = new Data();
+   Controller controller = new Controller();
+   View       view       = new View();
+   
+   
+   //set dependence of the classes in package; 
+   //connect observer with observable
+   controller.addData(data);
+   view.addModel(model);
+  //view.addData(data);
+   view.addController(controller);
+   
+   
+   //draw the view 
+   view.build();
+   
+ }
+}

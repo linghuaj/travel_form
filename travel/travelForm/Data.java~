@@ -1,0 +1,108 @@
+
+/*Class          : Data
+  Author         : Linghua Jin
+  Description:
+
+  1. This is the class that stores all the value generated from controller
+  2. Same as ComboModel, no need to add view or controller.
+  3. the basic data structure is a hashtable
+  4. basic function is to validate the hashtable and return a String later can print out on screen.
+  */
+
+
+package travelForm;
+
+import java.util.Hashtable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
+
+public class Data{
+  public Data(){
+    //initialize hash, since 1 is alreay there
+    hash.put("passenger","1"); hash.put("departTime","anytime"); hash.put("returnTime","anytime"); 
+ 
+  }
+  
+  //function allow hashtable to add elements,so later controller can call it to update hashtable
+  public void addElement(String key,String value){
+    hash.put(key,value);
+  }
+  
+  public String display(){
+    String info="";
+    
+    // whether use has input all info.
+    for (int i =0;i<keys.length;i++){
+      if (hash.containsKey(keys[i])==false){
+        return "Lacking input of "+keys[i];       
+      }
+    }
+    
+    //whether all the info.are complete and usable;
+    for (int i =0;i<keys.length;i++){
+      if (hash.contains("")||hash.contains("time")||hash.contains("month")
+            ||hash.contains("year")||hash.contains("date")||hash.contains("0")){
+        return "incomplete selection or incomplete input";
+          
+      }
+    }
+    
+    //whether input the right time
+    //Convert String to date
+    Date date1=createDate(getHashValue("departMonth"), getHashValue("departDate"),getHashValue("departYear"));
+    Date date2=createDate(getHashValue("returnMonth"),getHashValue("returnDate"),getHashValue("returnYear"));
+    
+    if ((date1==null)){
+      return "invalid date input: depart date do not exist";
+    }
+    if ((date2==null)){
+      return "invalid date input: return date do not exist";
+    }
+    
+    if (date1.after(date2)){
+      return"invalid date- departure date is after return date";
+    }
+    
+    info += "Number of passengers: "+ getHashValue("passenger")+ "\n"
+          + "From:"+getHashValue("from") + "\n"     
+          + "To:"+getHashValue("to")+ "\n" 
+          
+          + "Departing: "+getHashValue("departMonth")+ " "+getHashValue("departDate")
+          + " "+getHashValue("departYear") +" "+getHashValue("departTime")+ "\n"
+            
+          + "Returning: "+getHashValue("returnMonth")+ " "+getHashValue("returnDate")
+          + " "+getHashValue("returnYear")+" "+getHashValue("returnTime")+ "\n";
+   
+    
+    return info;
+ 
+  }
+  
+  
+  //pass in three strings, and convert it into standard Date object; 
+  public Date createDate(String m, String d, String y)
+  {
+     String s=m+" "+d+" "+y;
+     SimpleDateFormat sdf=new SimpleDateFormat("MMMM dd yyyy");
+     sdf.setLenient(false);
+     try{
+       return sdf.parse(s);
+     }catch(ParseException e){
+       return null;
+     }
+  }
+  
+  
+      
+  public String getHashValue(String key){
+    return (String)hash.get(key);
+  }
+  
+  //Instance variable
+  public Hashtable<String,String> hash=new Hashtable<String,String>();
+  
+  String[] keys={"from","to","departMonth","departDate","departYear","departTime","returnMonth","returnDate","returnYear","returnTime","passenger"};
+  
+
+}
